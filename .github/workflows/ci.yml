@@ -5,6 +5,8 @@ on:
 
 env:
   ENTRYPOINT: app.py
+  UV_VERSION: 0.6.2
+  PYTHON_VERSION_FILE: ".python-version"
 
 jobs:
   ruff:
@@ -16,12 +18,12 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
         with:
-          version: "0.6.2"
+          version: ${{ env.UV_VERSION }}
 
       - name: "Set up Python"
         uses: actions/setup-python@v5
         with:
-          python-version-file: ".python-version"
+          python-version-file: ${{ env.PYTHON_VERSION_FILE }}
 
       - name: Install the project
         run: uv sync
@@ -38,12 +40,12 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
         with:
-          version: "0.6.2"
+          version: ${{ env.UV_VERSION }}
 
       - name: "Set up Python"
         uses: actions/setup-python@v5
         with:
-          python-version-file: ".python-version"
+          python-version-file: ${{ env.PYTHON_VERSION_FILE }}
 
       - name: Install the project
         run: uv sync
