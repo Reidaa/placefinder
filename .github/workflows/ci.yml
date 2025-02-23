@@ -8,7 +8,6 @@ env:
 
 jobs:
   check:
-    name: python
     runs-on: ubuntu-latest
 
     steps:
@@ -30,5 +29,6 @@ jobs:
       - name: Run Ruff
         run: uv run ruff check --output-format=github .
 
-      - name: Run Ruff
+      - name: Run MyPy
+        if: always()
         run: uv run mypy ${{ env.ENTRYPOINT }}
