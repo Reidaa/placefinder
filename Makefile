@@ -1,3 +1,6 @@
+CSV_FILE = kebabs.csv
+SQLITE_FILE = kebabs.sqlite3
+
 .PHONY: run
 run:
 	uv run app.py
@@ -18,3 +21,7 @@ lint:
 .PHONY: check
 check:
 	uv run mypy app.py
+
+.PHONY: csv
+csv:
+	sqlite3 -header -csv "./${SQLITE_FILE}" "select * from kebab_shops;" > $(CSV_FILE)
