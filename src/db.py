@@ -13,7 +13,7 @@ from peewee import (
 
 from src.t import Shop
 
-db = SqliteDatabase("paris_kebab_shops.db")
+db = SqliteDatabase("kebabs.sqlite3")
 
 
 class BaseModel(Model):

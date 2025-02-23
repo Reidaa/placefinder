@@ -1,5 +1,4 @@
 import time
-from datetime import datetime
 
 import googlemaps
 import pandas as pd
@@ -42,6 +41,7 @@ def get_kebab_shops(api_key: str):
         "kebap",
         "kebab à emporter",
         "spécialités turques",
+        "turkish",
     ]
 
     # Search radius in meters (Paris is roughly 10km across)
@@ -115,8 +115,7 @@ def save_to_csv(shops: list[Shop]):
     """
     Saves the shop information to a CSV file
     """
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"paris_kebab_shops_{timestamp}.csv"
+    filename = "kebabs.csv"
     df = pd.DataFrame(
         [shop.model_dump() for shop in sorted(shops, key=lambda shop: shop.name)]
     )
@@ -126,12 +125,9 @@ def save_to_csv(shops: list[Shop]):
 
 
 def main():
-    # Replace with your Google Maps API key
-    API_KEY = env.GMAPS_API_KEY
-
     logger.info("Fetching kebab shops in Paris...")
-    shops = get_kebab_shops(str(API_KEY))
+    shops = get_kebab_shops(str(env.GMAPS_API_KEY))
 
     logger.info(f"Found {len(shops)} unique kebab shops")
-    # save_to_csv(shops)
+    save_to_csv(shops)
     save_to_db(shops)
