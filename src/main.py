@@ -1,7 +1,6 @@
 import time
 
 import googlemaps
-import pandas as pd
 from loguru import logger
 
 from src.db import save_to_db
@@ -48,6 +47,8 @@ def get_kebab_shops(api_key: str):
     radius = 10000
 
     for term in search_terms:
+        logger.info(f"Using search term: {term}")
+
         # Token for pagination
         page_token = None
 
@@ -105,23 +106,9 @@ def get_kebab_shops(api_key: str):
 
             except Exception as e:
                 print(f"Error occurred while fetching places: {str(e)}")
-                raise e
                 break
 
     return all_shops
-
-
-def save_to_csv(shops: list[Shop]):
-    """
-    Saves the shop information to a CSV file
-    """
-    filename = "kebabs.csv"
-    df = pd.DataFrame(
-        [shop.model_dump() for shop in sorted(shops, key=lambda shop: shop.name)]
-    )
-    df.to_csv(filename, index=False, encoding="utf-8-sig")
-
-    logger.info(f"Data saved to {filename}")
 
 
 def main():
@@ -129,5 +116,4 @@ def main():
     shops = get_kebab_shops(str(env.GMAPS_API_KEY))
 
     logger.info(f"Found {len(shops)} unique kebab shops")
-    save_to_csv(shops)
     save_to_db(shops)
