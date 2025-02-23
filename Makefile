@@ -24,4 +24,4 @@ check:
 
 .PHONY: csv
 csv:
-	sqlite3 -header -csv "./${SQLITE_FILE}" "select * from kebab_shops;" > $(CSV_FILE)
+	sqlite3 -header -csv "./${SQLITE_FILE}" "SELECT * FROM kebab_shops ORDER BY name;" > $(CSV_FILE)

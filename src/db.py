@@ -29,7 +29,6 @@ class KebabShop(BaseModel):
     address = TextField()
     rating = FloatField(null=True)
     total_ratings = IntegerField(null=True)
-    website = CharField(null=True)
     latitude = FloatField()
     longitude = FloatField()
     last_updated = DateTimeField(default=datetime.now)
