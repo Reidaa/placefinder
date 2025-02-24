@@ -14,10 +14,8 @@ def get_kebab_shops(api_key: str):
     Fetches kebab shops in Paris using Google Maps Places API
     Returns a list of dictionaries containing shop information
     """
-    # Initialize Google Maps client
     gmaps = googlemaps.Client(key=api_key)
 
-    # Define the search area (Paris)
     location = "Paris, France"
 
     # Get the geometry of Paris for the search
@@ -27,10 +25,8 @@ def get_kebab_shops(api_key: str):
 
     paris_location = geocode_result[0]["geometry"]["location"]
 
-    # List to store all kebab shops
     all_shops: list[Shop] = []
 
-    # Search terms
     search_terms = [
         "kebab",
         "döner kebab",
@@ -41,6 +37,26 @@ def get_kebab_shops(api_key: str):
         "kebab à emporter",
         "spécialités turques",
         "turkish",
+        "kebab 75001",
+        "kebab 75002",
+        "kebab 75003",
+        "kebab 75004",
+        "kebab 75005",
+        "kebab 75006",
+        "kebab 75007",
+        "kebab 75008",
+        "kebab 75009",
+        "kebab 75010",
+        "kebab 75011",
+        "kebab 75012",
+        "kebab 75013",
+        "kebab 75014",
+        "kebab 75015",
+        "kebab 75016",
+        "kebab 75017",
+        "kebab 75018",
+        "kebab 75019",
+        "kebab 75020",
     ]
 
     # Search radius in meters (Paris is roughly 10km across)
