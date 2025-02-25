@@ -2,8 +2,8 @@ CSV_FILE = kebabs.csv
 SQLITE_FILE = kebabs.sqlite3
 
 .PHONY: run
-run:
-	uv run app.py
+run: check
+	uv run main.py
 
 .PHONY: format
 format:
@@ -19,7 +19,7 @@ lint:
 
 .PHONY: check
 check:
-	uv run mypy app.py
+	uv run mypy main.py
 
 .PHONY: csv
 csv:
