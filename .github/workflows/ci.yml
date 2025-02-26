@@ -51,4 +51,4 @@ jobs:
         run: make setup
 
       - name: Run MyPy
-        run: make lint
+        run: make check
