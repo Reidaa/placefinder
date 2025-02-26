@@ -4,13 +4,14 @@ from rich.panel import Panel
 from rich.text import Text
 
 from placefinder import console
+from placefinder.LocationFactory import locations
 from placefinder.MenuAnalyzer import VisualAnalyzer
 from placefinder.services.GMaps import GMapsService
 from placefinder.summary import top_places
-from placefinder.t import PlaceCollection
+from placefinder.t import Location, PlaceCollection
 from placefinder.terminal import Banner, ProgressBar, WorkingOnIt
 
-location = "Paris, France"
+location = locations["paris"]
 
 # base_terms = [
 #     "cider",
@@ -35,38 +36,15 @@ base_terms = ["ramen"]
 # exclude_terms = ["takoyaki", "udon", "soba"]
 menu_terms: list[str] = []
 
-paris_postal_codes = [
-    "75001",
-    # "75002",
-    # "75003",
-    # "75004",
-    # "75005",
-    # "75006",
-    # "75007",
-    # "75008",
-    # "75009",
-    # "75010",
-    # "75011",
-    # "75012",
-    # "75013",
-    # "75014",
-    # "75015",
-    # "75016",
-    # "75017",
-    # "75018",
-    # "75019",
-    # "75020",
-]
-
 
 search_terms = []
 
 for term in base_terms:
-    for po in paris_postal_codes:
-        search_terms.append(f"{term} {po}")
+    for district in location.districts:
+        search_terms.append(f"{term} {district}")
 
 
-def search_places(location: str, search_terms: List[str]) -> PlaceCollection:
+def search_places(location: Location, search_terms: List[str]) -> PlaceCollection:
     """
     Fetches places in specified location using Google Maps Places API
     """
@@ -77,7 +55,7 @@ def search_places(location: str, search_terms: List[str]) -> PlaceCollection:
     with WorkingOnIt("[bold blue]Initializing OCR engine...[/]"):
         visual_analyzer = VisualAnalyzer(languages=["en", "fr"])
 
-    places = gmaps.get_places(location, search_terms, 10000)
+    places = gmaps.get_places(str(location), search_terms, radius=location.radius)
 
     with ProgressBar() as progress:
         task = progress.add_task(

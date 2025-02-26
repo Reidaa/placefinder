@@ -1,13 +1,17 @@
 # Placefinder
 
+Please provide your own google maps API key.
+
+Use at your own caution, this program is not yet optimized to make the least amount of request ...
+
+At the time of writing this, i'm out of free credit.
+
+If you are still reading this, I'll work on reducing the number of requests next month, when my free credit is back up.
+
 ## TODO
 
-- [ ] Deploy PostgreSQL db
-- [ ] Store data to db
-- [ ] workflows to
-  - [ ] schedule script run to update the database
-  - [ ] export the database data to csv format
-  - [ ] if modification; commit and push the modifications
 - [ ] "Temporarily closed" / "Definitely Closed"
   - [ ] Mark them
-  - [ ] Delete "Definitely Closed"
+  - [ ] Do not store them
+- [ ] Other cities ?
+- [ ] Display the whole data set, not just the top X, and sorted

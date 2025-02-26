@@ -10,6 +10,19 @@ class Env(BaseModel):
     GMAPS_API_KEY: str
 
 
+class Location(BaseModel):
+    name: str
+    country: str
+    radius: int
+    districts: list[str]
+
+    def __str__(self):
+        return f"{self.name}, {self.country}"
+
+    def __repr__(self):
+        return str(self)
+
+
 class PlacePhoto(BaseModel):
     height: int
     html_attributions: list[str]

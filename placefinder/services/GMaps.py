@@ -11,7 +11,7 @@ class GMapsService:
     def __init__(self):
         self.gmaps = googlemaps.Client(key=env.GMAPS_API_KEY)
 
-    def get_geocode(self, location: str):
+    def _geocode(self, location: str):
         with WorkingOnIt(f"[bold green]Geocoding {location}..."):
             geocode_result = self.gmaps.geocode(location)
             if not geocode_result:
@@ -20,6 +20,26 @@ class GMapsService:
             location_coords = geocode_result[0]["geometry"]["location"]
 
         return location_coords
+
+    def _place(self, place_id: str) -> dict:
+        """Get detailed information from a place_id
+
+        Args:
+            place_id (str)
+        """
+        details: dict = self.gmaps.place(
+            place_id,
+            fields=[
+                "name",
+                "formatted_address",
+                "rating",
+                "user_ratings_total",
+                # "opening_hours",
+                "photo",
+            ],
+        )["result"]
+
+        return details
 
     def get_places(
         self, location: str, search_terms: list[str], radius: int = 10000
@@ -36,7 +56,7 @@ class GMapsService:
             radius (int, optional): Search radius in meters. Defaults to 10000.
         """
         all_places: list[dict] = []
-        location_coords = self.get_geocode(location)
+        location_coords = self._geocode(location)
 
         with ProgressBar() as progress:
             search_task = progress.add_task(
@@ -55,7 +75,7 @@ class GMapsService:
 
                 while True:
                     # Perform the search
-                    places_result = self.gmaps.places_nearby(
+                    places_result: dict = self.gmaps.places_nearby(
                         location=location_coords,
                         keyword=term,
                         radius=radius,
@@ -74,18 +94,7 @@ class GMapsService:
                     for i, place in enumerate(results):
                         progress.update(place_task, advance=1)
 
-                        # Get detailed information for each place
-                        details: dict = self.gmaps.place(
-                            place["place_id"],
-                            fields=[
-                                "name",
-                                "formatted_address",
-                                "rating",
-                                "user_ratings_total",
-                                # "opening_hours",
-                                "photo",
-                            ],
-                        )["result"]
+                        details = self._place(place["place_id"])
 
                         place_info = {
                             "place_id": place["place_id"],
