@@ -1,9 +1,14 @@
 [project]
 name = "placefinder"
 version = "0.1.0"
-description = "Add your description here"
+description = "The description"
 readme = "README.md"
 requires-python = ">=3.13"
+
+authors = [
+    { name = "Thomas Kemkemian", email = "thomas.kemkemian@outlook.com" },
+]
+
 dependencies = [
     "easyocr>=1.7.2",
     "googlemaps>=4.10.0",

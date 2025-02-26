@@ -26,7 +26,7 @@ jobs:
           python-version-file: ${{ env.PYTHON_VERSION_FILE }}
 
       - name: Install the project
-        run: uv sync
+        run: make setup
 
       - name: Run Ruff
         run: uv run ruff check --output-format=github .
@@ -48,7 +48,7 @@ jobs:
           python-version-file: ${{ env.PYTHON_VERSION_FILE }}
 
       - name: Install the project
-        run: uv sync
+        run: make setup
 
       - name: Run MyPy
-        run: uv run mypy ${{ env.ENTRYPOINT }}
+        run: make lint

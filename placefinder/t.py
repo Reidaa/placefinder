@@ -10,6 +10,13 @@ class Env(BaseModel):
     GMAPS_API_KEY: str
 
 
+class PlacePhoto(BaseModel):
+    height: int
+    html_attributions: list[str]
+    photo_reference: str
+    width: int
+
+
 class Place(BaseModel):
     """Pydantic model for a place"""
 
@@ -25,6 +32,7 @@ class Place(BaseModel):
         default_factory=lambda: datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     )
     menu_terms: list[str] = Field(default_factory=list)
+    photos: list[PlacePhoto] = Field(default_factory=list)
 
     @field_validator("rating")
     @classmethod
@@ -52,19 +60,13 @@ class PlaceCollection:
     def __init__(self):
         self.places: list[Place] = []
 
-    def add_place(self, place_data: dict[str, Any]) -> bool:
+    def add_place(self, place: Place) -> bool:
         """Add a place to the collection if it doesn't exist already"""
-        try:
-            # Create a Pydantic model instance
-            place = Place(**place_data)
-
-            # Check if place already exists
-            if not any(existing.place_id == place.place_id for existing in self.places):
-                self.places.append(place)
-                return True
-            return False
-        except Exception as e:
-            raise Exception(f"[bold red]Invalid place data: {str(e)}")
+        # Check if place already exists
+        if not any(existing.place_id == place.place_id for existing in self.places):
+            self.places.append(place)
+            return True
+        return False
 
     def to_list(self) -> list[dict[str, Any]]:
         """Convert collection to list of dictionaries"""
@@ -160,13 +162,3 @@ class PlaceCollection:
                 districts[district] += 1
 
         return districts
-
-    def get_menu_terms_distribution(self) -> dict[str, int]:
-        """Get distribution of menu terms"""
-        term_counts: defaultdict = defaultdict(int)
-
-        for place in self.places:
-            for term in place.menu_terms:
-                term_counts[term.lower()] += 1
-
-        return dict(sorted(term_counts.items(), key=lambda x: x[1], reverse=True))
