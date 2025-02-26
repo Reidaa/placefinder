@@ -5,6 +5,7 @@ import cv2
 import easyocr
 import httpx
 
+from placefinder import error_console
 from placefinder.env import env
 from placefinder.t import PlacePhoto
 
@@ -58,7 +59,11 @@ class VisualAnalyzer:
             if not photo.photo_reference:
                 continue
 
-            image_path = self.download_photo(photo.photo_reference)
+            try:
+                image_path = self.download_photo(photo.photo_reference)
+            except httpx.HTTPStatusError as e:
+                error_console.print(e)
+                continue
 
             # Extract text from image
             texts = self.extract_text_from_image(image_path)

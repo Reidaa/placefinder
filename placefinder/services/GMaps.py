@@ -2,17 +2,17 @@ import time
 
 import googlemaps
 
+from placefinder import terminal
 from placefinder.env import env
 from placefinder.t import Place, PlacePhoto
-from placefinder.terminal import ProgressBar, WorkingOnIt
 
 
 class GMapsService:
     def __init__(self):
-        self.gmaps = googlemaps.Client(key=env.GMAPS_API_KEY)
+        self.gmaps = googlemaps.Client(key=env.GMAPS_API_KEY.get_secret_value())
 
     def _geocode(self, location: str):
-        with WorkingOnIt(f"[bold green]Geocoding {location}..."):
+        with terminal.WorkingOnIt(f"[bold green]Geocoding {location}..."):
             geocode_result = self.gmaps.geocode(location)
             if not geocode_result:
                 raise Exception(f"Could not geocode location: {location}")
@@ -58,7 +58,7 @@ class GMapsService:
         all_places: list[dict] = []
         location_coords = self._geocode(location)
 
-        with ProgressBar() as progress:
+        with terminal.ProgressBar() as progress:
             search_task = progress.add_task(
                 f"[yellow]Searching for places in {location} ...",
                 total=len(search_terms),
@@ -91,19 +91,27 @@ class GMapsService:
                     )
 
                     # Process each place
-                    for i, place in enumerate(results):
+                    for result in results:
                         progress.update(place_task, advance=1)
 
-                        details = self._place(place["place_id"])
+                        if any(
+                            [
+                                result["place_id"] == place["place_id"]
+                                for place in all_places
+                            ]
+                        ):
+                            continue
+
+                        details = self._place(result["place_id"])
 
                         place_info = {
-                            "place_id": place["place_id"],
+                            "place_id": result["place_id"],
                             "name": details.get("name", ""),
                             "address": details.get("formatted_address", ""),
                             "rating": details.get("rating"),
                             "total_ratings": details.get("user_ratings_total"),
-                            "latitude": place["geometry"]["location"]["lat"],
-                            "longitude": place["geometry"]["location"]["lng"],
+                            "latitude": result["geometry"]["location"]["lat"],
+                            "longitude": result["geometry"]["location"]["lng"],
                             "photos": details.get("photos", []),
                             # "opening_hours": "; ".join(
                             #     details.get("opening_hours", {}).get("weekday_text", [])

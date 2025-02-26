@@ -10,14 +10,14 @@ authors = [
 ]
 
 dependencies = [
-    "easyocr>=1.7.2",
     "googlemaps>=4.10.0",
     "httpx>=0.28.1",
-    "opencv-python>=4.11.0.86",
     "pydantic>=2.10.6",
     "pydantic-extra-types>=2.10.2",
     "python-dotenv>=1.0.1",
     "rich>=13.9.4",
+    "easyocr>=1.7.2",
+    "opencv-python>=4.11.0.86",
 ]
 
 [dependency-groups]
@@ -25,4 +25,10 @@ dev = ["mypy>=1.15.0", "ruff>=0.9.7"]
 
 [[tool.mypy.overrides]]
 module = ["googlemaps.*", "easyocr.*"]
+follow_imports = "normal"
 ignore_missing_imports = true
+strict_equality = true
+warn_no_return = true
+warn_return_any = true
+warn_unreachable = true
+warn_unused_ignores = true

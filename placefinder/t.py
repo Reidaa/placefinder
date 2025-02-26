@@ -2,12 +2,12 @@ from collections import defaultdict
 from datetime import datetime
 from typing import Any, Optional
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, SecretStr, field_validator
 from pydantic_extra_types.coordinate import Latitude, Longitude
 
 
 class Env(BaseModel):
-    GMAPS_API_KEY: str
+    GMAPS_API_KEY: SecretStr = Field(min_length=1)
 
 
 class Location(BaseModel):
@@ -16,10 +16,10 @@ class Location(BaseModel):
     radius: int
     districts: list[str]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name}, {self.country}"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self)
 
 

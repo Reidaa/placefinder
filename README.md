@@ -14,4 +14,3 @@ If you are still reading this, I'll work on reducing the number of requests next
   - [ ] Mark them
   - [ ] Do not store them
 - [ ] Other cities ?
-- [ ] Display the whole data set, not just the top X, and sorted

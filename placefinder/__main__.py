@@ -5,11 +5,13 @@ from rich.text import Text
 
 from placefinder import console
 from placefinder.LocationFactory import locations
-from placefinder.MenuAnalyzer import VisualAnalyzer
+from placefinder.ocr.VisualAnalyzer import VisualAnalyzer
 from placefinder.services.GMaps import GMapsService
 from placefinder.summary import top_places
 from placefinder.t import Location, PlaceCollection
 from placefinder.terminal import Banner, ProgressBar, WorkingOnIt
+
+OCR = False
 
 location = locations["paris"]
 
@@ -27,11 +29,11 @@ location = locations["paris"]
 #     "turkish",
 # ]
 
-# base_terms = ["bubble tea", "bubble tea shop"]
+base_terms = ["bubble tea", "bubble tea shop"]
 
 # base_terms = ["korean", "korean bbq"]
 
-base_terms = ["ramen"]
+# base_terms = ["ramen"]
 
 # exclude_terms = ["takoyaki", "udon", "soba"]
 menu_terms: list[str] = []
@@ -40,7 +42,7 @@ menu_terms: list[str] = []
 search_terms = []
 
 for term in base_terms:
-    for district in location.districts:
+    for district in location.districts[:1]:
         search_terms.append(f"{term} {district}")
 
 
@@ -52,8 +54,9 @@ def search_places(location: Location, search_terms: List[str]) -> PlaceCollectio
 
     gmaps = GMapsService()
 
-    with WorkingOnIt("[bold blue]Initializing OCR engine...[/]"):
-        visual_analyzer = VisualAnalyzer(languages=["en", "fr"])
+    if OCR:
+        with WorkingOnIt("[bold blue]Initializing OCR engine...[/]"):
+            visual_analyzer = VisualAnalyzer(languages=["en", "fr"])
 
     places = gmaps.get_places(str(location), search_terms, radius=location.radius)
 
@@ -63,7 +66,7 @@ def search_places(location: Location, search_terms: List[str]) -> PlaceCollectio
         )
 
         for place in places:
-            if place.photos:
+            if OCR and place.photos:
                 progress.update(
                     task,
                     description=f"[cyan]Analyzing {place.name}'s photos ...",
@@ -92,14 +95,14 @@ def main():
 
     console.print(
         Panel(
-            Text(f"{location} Places Data Summary", style="bold magenta"),
+            Text(f"{location} - Data Summary", style="bold magenta"),
             border_style="magenta",
         )
     )
 
     console.print(f"[bold cyan]Total places found:[/] [yellow]{total_places}[/]")
 
-    top_places(collection, 50)
+    top_places(collection, total_places)
 
 
 if __name__ == "__main__":
