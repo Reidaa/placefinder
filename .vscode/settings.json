@@ -12,13 +12,7 @@
     "[python]": {
         "editor.defaultFormatter": "charliermarsh.ruff",
     },
-    "sqltools.useNodeRuntime": true,
-    "sqltools.connections": [
-        {
-            "previewLimit": 300,
-            "driver": "SQLite",
-            "name": "Kebabs",
-            "database": "./kebabs.sqlite3"
-        }
+    "cSpell.words": [
+        "cidrerie"
     ]
 }

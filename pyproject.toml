@@ -1,18 +1,28 @@
 [project]
-name = "kebabesque"
+name = "placefinder"
 version = "0.1.0"
-description = "Add your description here"
+description = "The description"
 readme = "README.md"
 requires-python = ">=3.13"
+
+authors = [
+    { name = "Thomas Kemkemian", email = "thomas.kemkemian@outlook.com" },
+]
+
 dependencies = [
+    "easyocr>=1.7.2",
     "googlemaps>=4.10.0",
-    "loguru>=0.7.3",
-    "peewee>=3.17.9",
+    "httpx>=0.28.1",
+    "opencv-python>=4.11.0.86",
     "pydantic>=2.10.6",
     "pydantic-extra-types>=2.10.2",
     "python-dotenv>=1.0.1",
-    "types-peewee>=3.17.9.20250210",
+    "rich>=13.9.4",
 ]
 
 [dependency-groups]
 dev = ["mypy>=1.15.0", "ruff>=0.9.7"]
+
+[[tool.mypy.overrides]]
+module = ["googlemaps.*", "easyocr.*"]
+ignore_missing_imports = true

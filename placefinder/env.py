@@ -2,7 +2,7 @@ import os
 
 from dotenv import load_dotenv
 
-from src.t import Env
+from placefinder.t import Env
 
 load_dotenv(dotenv_path=".env", override=True, verbose=True)
 

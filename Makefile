@@ -1,9 +1,17 @@
 CSV_FILE = kebabs.csv
 SQLITE_FILE = kebabs.sqlite3
 
+.PHONY: setup
+setup:
+	uv sync
+
 .PHONY: run
-run:
-	uv run app.py
+run: check
+	uv run -m placefinder
+
+.PHONY: check
+check:
+	uv run mypy -p placefinder
 
 .PHONY: format
 format:
@@ -16,11 +24,3 @@ fmt: format
 .PHONY: lint
 lint:
 	uv run ruff check
-
-.PHONY: check
-check:
-	uv run mypy app.py
-
-.PHONY: csv
-csv:
-	sqlite3 -header -csv "./${SQLITE_FILE}" "SELECT * FROM kebab_shops ORDER BY name;" > $(CSV_FILE)
