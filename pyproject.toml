@@ -25,10 +25,4 @@ dev = ["mypy>=1.15.0", "ruff>=0.9.7"]
 
 [[tool.mypy.overrides]]
 module = ["googlemaps.*", "easyocr.*"]
-follow_imports = "normal"
 ignore_missing_imports = true
-strict_equality = true
-warn_no_return = true
-warn_return_any = true
-warn_unreachable = true
-warn_unused_ignores = true

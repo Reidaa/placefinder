@@ -4,7 +4,7 @@ from rich.panel import Panel
 from rich.text import Text
 
 from placefinder import console
-from placefinder.LocationFactory import locations
+from placefinder.Locations import locations
 from placefinder.ocr.VisualAnalyzer import VisualAnalyzer
 from placefinder.services.GMaps import GMapsService
 from placefinder.summary import top_places
@@ -13,7 +13,7 @@ from placefinder.terminal import Banner, ProgressBar, WorkingOnIt
 
 OCR = False
 
-location = locations["paris"]
+location = locations["fr-paris"]
 
 # base_terms = [
 #     "cider",
@@ -34,10 +34,7 @@ base_terms = ["bubble tea", "bubble tea shop"]
 # base_terms = ["korean", "korean bbq"]
 
 # base_terms = ["ramen"]
-
 # exclude_terms = ["takoyaki", "udon", "soba"]
-menu_terms: list[str] = []
-
 
 search_terms = []
 

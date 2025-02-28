@@ -6,6 +6,14 @@ from placefinder import terminal
 from placefinder.env import env
 from placefinder.t import Place, PlacePhoto
 
+MAX_GEOCODING = 10000
+MAX_PLACES_DETAILS_ID = None
+MAX_PLACES_NEARBY_SEARCH = 5000
+
+
+class QuotaException(Exception):
+    pass
+
 
 class GMapsService:
     def __init__(self):

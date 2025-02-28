@@ -1,6 +1,3 @@
-CSV_FILE = kebabs.csv
-SQLITE_FILE = kebabs.sqlite3
-
 .PHONY: setup
 setup:
 	uv sync

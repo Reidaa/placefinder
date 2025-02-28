@@ -28,7 +28,6 @@ PARIS = Location(
     radius=10000,
 )
 
-locations: dict[str, Location] = {"paris": PARIS}
+locations: dict[str, Location] = {"fr-paris": PARIS}
 
-if __name__ == "__main__":
-    print(locations["paris"])
+supported_locations = [k for k in locations]
